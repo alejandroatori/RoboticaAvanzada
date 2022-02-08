@@ -65,9 +65,6 @@ void SpecificWorker::initialize(int period)
     catch(const Ice::Exception &e) { std::cout << e.what() << std::endl;}
 
     connect(viewer, &AbstractGraphicViewer::new_mouse_coordinates, this, &SpecificWorker::new_target_slot);
-    connect(tilt_scrollbar, &QScrollBar::valueChanged, this, &SpecificWorker::new_tilt_value_slot);
-    connect(sweep_button, &QPushButton::clicked, this, &SpecificWorker::sweep_button_slot);
-    connect(trace_button, &QPushButton::clicked, this, &SpecificWorker::sweep_button_slot);
 
     // grid
     grid.initialize(dimensions, TILE_SIZE, &viewer->scene, false);
@@ -115,19 +112,16 @@ void SpecificWorker::compute()
         RoboCompFullPoseEstimation::FullPoseEuler bState;
         bState = fullposeestimation_proxy->getFullPoseEuler();
         qInfo()  << bState.x << bState.y << bState.rz;
+
         robot_polygon->setRotation(bState.rz*180/M_PI);
         robot_polygon->setPos(bState.x, bState.y);
-        if(sweep_button->isChecked())
-        {
-            ;           grid.setVisited(grid.pointToGrid(bState.x, bState.y), true);
-            sweep_lcdNumber->display(100.0 * grid.count_total_visited() / grid.count_total());
-        }
-        if(trace_button->isChecked())
-        {
-            QLineF line(last_point.x(), last_point.y(), bState.x, bState.y);
-            lines.push_back(viewer->scene.addLine(line, QPen(QColor("Blue"),40)));
-            last_point = QPointF(bState.x, bState.y);
-        }
+
+        //speed_lcd->display(fullposeestimation_proxy->)
+        //TODO speed LCD
+        posx_lcd->display(bState.x);
+        posz_lcd->display(bState.z);
+        //TODO angle LCD
+
     }
     catch(const Ice::Exception &e){ std::cout << e.what() << "POSE ERROR" << std::endl;}
 
@@ -153,6 +147,9 @@ void SpecificWorker::compute()
     }
     catch(const Ice::Exception &e){ std::cout << e.what() << "CAMERA ERROR" << std::endl;}
 }
+
+
+
 
 /////////////////////////////////////////////////////////////////////////
 void SpecificWorker::draw_laser(const RoboCompLaser::TLaserData &ldata) // robot coordinates

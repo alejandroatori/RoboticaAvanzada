@@ -15,8 +15,6 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QScrollBar>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QVBoxLayout>
@@ -36,25 +34,25 @@ public:
     QLabel *top_camera_label;
     QHBoxLayout *horizontalLayout_2;
     QHBoxLayout *horizontalLayout;
-    QLCDNumber *tilt_lcdnumber;
-    QLabel *label;
-    QScrollBar *tilt_scrollbar;
+    QLCDNumber *speed_lcd;
+    QLabel *speed_label;
     QHBoxLayout *horizontalLayout_4;
     QHBoxLayout *horizontalLayout_3;
-    QPushButton *sweep_button;
+    QLabel *posx_label;
     QSpacerItem *horizontalSpacer;
-    QLCDNumber *sweep_lcdNumber;
-    QLabel *label_2;
+    QLCDNumber *posx_lcd;
     QHBoxLayout *horizontalLayout_5;
-    QPushButton *trace_button;
+    QLabel *posz_label;
     QSpacerItem *horizontalSpacer_2;
+    QLCDNumber *posz_lcd;
     QSpacerItem *verticalSpacer;
+    QLabel *bottom_camera_label;
 
     void setupUi(QWidget *guiDlg)
     {
         if (guiDlg->objectName().isEmpty())
             guiDlg->setObjectName(QString::fromUtf8("guiDlg"));
-        guiDlg->resize(769, 443);
+        guiDlg->resize(769, 549);
         verticalLayout = new QVBoxLayout(guiDlg);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         splitter = new QSplitter(guiDlg);
@@ -92,26 +90,26 @@ public:
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        tilt_lcdnumber = new QLCDNumber(control_frame);
-        tilt_lcdnumber->setObjectName(QString::fromUtf8("tilt_lcdnumber"));
+        speed_lcd = new QLCDNumber(control_frame);
+        speed_lcd->setObjectName(QString::fromUtf8("speed_lcd"));
+        QFont font;
+        font.setBold(false);
+        font.setItalic(false);
+        font.setWeight(50);
+        speed_lcd->setFont(font);
+        speed_lcd->setSmallDecimalPoint(false);
+        speed_lcd->setMode(QLCDNumber::Dec);
+        speed_lcd->setSegmentStyle(QLCDNumber::Flat);
 
-        horizontalLayout->addWidget(tilt_lcdnumber);
+        horizontalLayout->addWidget(speed_lcd);
 
-        label = new QLabel(control_frame);
-        label->setObjectName(QString::fromUtf8("label"));
+        speed_label = new QLabel(control_frame);
+        speed_label->setObjectName(QString::fromUtf8("speed_label"));
 
-        horizontalLayout->addWidget(label);
+        horizontalLayout->addWidget(speed_label);
 
 
         horizontalLayout_2->addLayout(horizontalLayout);
-
-        tilt_scrollbar = new QScrollBar(control_frame);
-        tilt_scrollbar->setObjectName(QString::fromUtf8("tilt_scrollbar"));
-        tilt_scrollbar->setMinimum(-10);
-        tilt_scrollbar->setMaximum(70);
-        tilt_scrollbar->setOrientation(Qt::Horizontal);
-
-        horizontalLayout_2->addWidget(tilt_scrollbar);
 
 
         verticalLayout_2->addLayout(horizontalLayout_2);
@@ -120,25 +118,20 @@ public:
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        sweep_button = new QPushButton(control_frame);
-        sweep_button->setObjectName(QString::fromUtf8("sweep_button"));
-        sweep_button->setCheckable(true);
+        posx_label = new QLabel(control_frame);
+        posx_label->setObjectName(QString::fromUtf8("posx_label"));
 
-        horizontalLayout_3->addWidget(sweep_button);
+        horizontalLayout_3->addWidget(posx_label);
 
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_3->addItem(horizontalSpacer);
 
-        sweep_lcdNumber = new QLCDNumber(control_frame);
-        sweep_lcdNumber->setObjectName(QString::fromUtf8("sweep_lcdNumber"));
+        posx_lcd = new QLCDNumber(control_frame);
+        posx_lcd->setObjectName(QString::fromUtf8("posx_lcd"));
+        posx_lcd->setSegmentStyle(QLCDNumber::Flat);
 
-        horizontalLayout_3->addWidget(sweep_lcdNumber);
-
-        label_2 = new QLabel(control_frame);
-        label_2->setObjectName(QString::fromUtf8("label_2"));
-
-        horizontalLayout_3->addWidget(label_2);
+        horizontalLayout_3->addWidget(posx_lcd);
 
 
         horizontalLayout_4->addLayout(horizontalLayout_3);
@@ -148,15 +141,20 @@ public:
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
-        trace_button = new QPushButton(control_frame);
-        trace_button->setObjectName(QString::fromUtf8("trace_button"));
-        trace_button->setCheckable(true);
+        posz_label = new QLabel(control_frame);
+        posz_label->setObjectName(QString::fromUtf8("posz_label"));
 
-        horizontalLayout_5->addWidget(trace_button);
+        horizontalLayout_5->addWidget(posz_label);
 
         horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_5->addItem(horizontalSpacer_2);
+
+        posz_lcd = new QLCDNumber(control_frame);
+        posz_lcd->setObjectName(QString::fromUtf8("posz_lcd"));
+        posz_lcd->setSegmentStyle(QLCDNumber::Flat);
+
+        horizontalLayout_5->addWidget(posz_lcd);
 
 
         verticalLayout_2->addLayout(horizontalLayout_5);
@@ -164,6 +162,12 @@ public:
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout_2->addItem(verticalSpacer);
+
+        bottom_camera_label = new QLabel(control_frame);
+        bottom_camera_label->setObjectName(QString::fromUtf8("bottom_camera_label"));
+        bottom_camera_label->setMinimumSize(QSize(0, 200));
+
+        verticalLayout_2->addWidget(bottom_camera_label);
 
 
         verticalLayout_3->addLayout(verticalLayout_2);
@@ -174,7 +178,6 @@ public:
 
 
         retranslateUi(guiDlg);
-        QObject::connect(tilt_scrollbar, SIGNAL(valueChanged(int)), tilt_lcdnumber, SLOT(display(int)));
 
         QMetaObject::connectSlotsByName(guiDlg);
     } // setupUi
@@ -183,10 +186,10 @@ public:
     {
         guiDlg->setWindowTitle(QApplication::translate("guiDlg", "giraff_viewer", nullptr));
         top_camera_label->setText(QApplication::translate("guiDlg", "TextLabel", nullptr));
-        label->setText(QApplication::translate("guiDlg", "tablet tilt", nullptr));
-        sweep_button->setText(QApplication::translate("guiDlg", "sweep", nullptr));
-        label_2->setText(QApplication::translate("guiDlg", "%", nullptr));
-        trace_button->setText(QApplication::translate("guiDlg", "trace", nullptr));
+        speed_label->setText(QApplication::translate("guiDlg", "speed", nullptr));
+        posx_label->setText(QApplication::translate("guiDlg", "position (x)", nullptr));
+        posz_label->setText(QApplication::translate("guiDlg", "position (z)", nullptr));
+        bottom_camera_label->setText(QApplication::translate("guiDlg", "TextLabel", nullptr));
     } // retranslateUi
 
 };

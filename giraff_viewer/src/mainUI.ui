@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>769</width>
-    <height>443</height>
+    <height>549</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,29 +79,33 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
-              <widget class="QLCDNumber" name="tilt_lcdnumber"/>
+              <widget class="QLCDNumber" name="speed_lcd">
+               <property name="font">
+                <font>
+                 <weight>50</weight>
+                 <italic>false</italic>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="smallDecimalPoint">
+                <bool>false</bool>
+               </property>
+               <property name="mode">
+                <enum>QLCDNumber::Dec</enum>
+               </property>
+               <property name="segmentStyle">
+                <enum>QLCDNumber::Flat</enum>
+               </property>
+              </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="speed_label">
                <property name="text">
-                <string>tablet tilt</string>
+                <string>speed</string>
                </property>
               </widget>
              </item>
             </layout>
-           </item>
-           <item>
-            <widget class="QScrollBar" name="tilt_scrollbar">
-             <property name="minimum">
-              <number>-10</number>
-             </property>
-             <property name="maximum">
-              <number>70</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
            </item>
           </layout>
          </item>
@@ -110,12 +114,9 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
-              <widget class="QPushButton" name="sweep_button">
+              <widget class="QLabel" name="posx_label">
                <property name="text">
-                <string>sweep</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
+                <string>position (x)</string>
                </property>
               </widget>
              </item>
@@ -133,12 +134,9 @@
               </spacer>
              </item>
              <item>
-              <widget class="QLCDNumber" name="sweep_lcdNumber"/>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_2">
-               <property name="text">
-                <string>%</string>
+              <widget class="QLCDNumber" name="posx_lcd">
+               <property name="segmentStyle">
+                <enum>QLCDNumber::Flat</enum>
                </property>
               </widget>
              </item>
@@ -149,12 +147,9 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <item>
-            <widget class="QPushButton" name="trace_button">
+            <widget class="QLabel" name="posz_label">
              <property name="text">
-              <string>trace</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
+              <string>position (z)</string>
              </property>
             </widget>
            </item>
@@ -171,6 +166,13 @@
              </property>
             </spacer>
            </item>
+           <item>
+            <widget class="QLCDNumber" name="posz_lcd">
+             <property name="segmentStyle">
+              <enum>QLCDNumber::Flat</enum>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
@@ -186,6 +188,19 @@
            </property>
           </spacer>
          </item>
+         <item>
+          <widget class="QLabel" name="bottom_camera_label">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>200</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>
@@ -195,22 +210,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>tilt_scrollbar</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>tilt_lcdnumber</receiver>
-   <slot>display(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>668</x>
-     <y>238</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>463</x>
-     <y>239</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

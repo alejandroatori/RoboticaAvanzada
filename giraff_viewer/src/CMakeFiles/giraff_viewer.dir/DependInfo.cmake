@@ -1,32 +1,28 @@
-
-# Consider dependencies only in project.
-set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
-
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
   "CXX"
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CameraRGBDSimple.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/CameraRGBDSimple.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CameraSimple.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/CameraSimple.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CommonBehavior.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/CommonBehavior.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/DifferentialRobot.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/DifferentialRobot.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/FullPoseEstimation.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/FullPoseEstimation.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/GenericBase.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/GenericBase.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/JointMotorSimple.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/JointMotorSimple.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/Laser.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/Laser.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/commonbehaviorI.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/commonbehaviorI.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/genericmonitor.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/genericmonitor.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/genericworker.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/genericworker.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/giraff_viewer_autogen/mocs_compilation.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/giraff_viewer_autogen/mocs_compilation.cpp.o"
-  "/home/robocomp/robocomp/classes/grid2d/grid.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/home/robocomp/robocomp/classes/grid2d/grid.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/main.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/main.cpp.o"
-  "/opt/robocomp/classes/qlog/qlog.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/opt/robocomp/classes/qlog/qlog.cpp.o"
-  "/opt/robocomp/classes/rapplication/rapplication.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/opt/robocomp/classes/rapplication/rapplication.cpp.o"
-  "/opt/robocomp/classes/sigwatch/sigwatch.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/opt/robocomp/classes/sigwatch/sigwatch.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/specificmonitor.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/specificmonitor.cpp.o"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/specificworker.cpp" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/specificworker.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CameraRGBDSimple.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/CameraRGBDSimple.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CameraSimple.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/CameraSimple.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CommonBehavior.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/CommonBehavior.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/DifferentialRobot.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/DifferentialRobot.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/FullPoseEstimation.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/FullPoseEstimation.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/GenericBase.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/GenericBase.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/JointMotorSimple.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/JointMotorSimple.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/Laser.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/Laser.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/commonbehaviorI.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/commonbehaviorI.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/genericmonitor.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/genericmonitor.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/genericworker.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/genericworker.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/giraff_viewer_autogen/mocs_compilation.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/giraff_viewer_autogen/mocs_compilation.cpp.o"
+  "/home/alumno/robocomp/classes/qlog/qlog.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/home/alumno/robocomp/classes/qlog/qlog.cpp.o"
+  "/home/alumno/robocomp/classes/rapplication/rapplication.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/home/alumno/robocomp/classes/rapplication/rapplication.cpp.o"
+  "/home/alumno/robocomp/classes/sigwatch/sigwatch.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/home/alumno/robocomp/classes/sigwatch/sigwatch.cpp.o"
+  "/home/robocomp/robocomp/classes/grid2d/grid.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/home/robocomp/robocomp/classes/grid2d/grid.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/main.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/main.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/specificmonitor.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/specificmonitor.cpp.o"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/specificworker.cpp" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CMakeFiles/giraff_viewer.dir/specificworker.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -36,7 +32,6 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
   "QT_CORE_LIB"
   "QT_GUI_LIB"
   "QT_NETWORK_LIB"
-  "QT_NO_DEBUG"
   "QT_OPENGL_LIB"
   "QT_SQL_LIB"
   "QT_WIDGETS_LIB"
@@ -52,9 +47,9 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/opt/robocomp/include"
   "/classes"
   "."
-  "/opt/robocomp/classes"
-  "/opt/robocomp/libs"
-  "/opt/robocomp/interfaces"
+  "/home/alumno/robocomp/classes"
+  "/home/alumno/robocomp/libs"
+  "/home/alumno/robocomp/interfaces"
   "/include"
   "/usr/include/opencv4"
   "/usr/include/x86_64-linux-gnu/qt5"
@@ -69,20 +64,16 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/usr/include/x86_64-linux-gnu/qt5/QtNetwork"
   )
 
-# The set of dependency files which are needed:
-set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  )
-
 # Pairs of files generated by the same build rule.
 set(CMAKE_MULTIPLE_OUTPUT_PAIRS
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CameraRGBDSimple.h" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CameraRGBDSimple.cpp"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CameraSimple.h" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CameraSimple.cpp"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CommonBehavior.h" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/CommonBehavior.cpp"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/DifferentialRobot.h" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/DifferentialRobot.cpp"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/FullPoseEstimation.h" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/FullPoseEstimation.cpp"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/GenericBase.h" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/GenericBase.cpp"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/JointMotorSimple.h" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/JointMotorSimple.cpp"
-  "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/Laser.h" "/home/alumno/robocomp/components/robocomp-robolab/components/viewers/giraff_viewer/src/Laser.cpp"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CameraRGBDSimple.h" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CameraRGBDSimple.cpp"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CameraSimple.h" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CameraSimple.cpp"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CommonBehavior.h" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/CommonBehavior.cpp"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/DifferentialRobot.h" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/DifferentialRobot.cpp"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/FullPoseEstimation.h" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/FullPoseEstimation.cpp"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/GenericBase.h" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/GenericBase.cpp"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/JointMotorSimple.h" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/JointMotorSimple.cpp"
+  "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/Laser.h" "/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer/src/Laser.cpp"
   )
 
 
