@@ -1,5 +1,5 @@
 /*
- *    Copyright (C) 2021 by YOUR NAME HERE
+ *    Copyright (C) 2022 by YOUR NAME HERE
  *
  *    This file is part of RoboComp
  *
@@ -23,16 +23,12 @@
 */
 
 
+
 #ifndef SPECIFICWORKER_H
 #define SPECIFICWORKER_H
 
 #include <genericworker.h>
-#include "/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.h"
-#include <QGraphicsPolygonItem>
-#include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-#include "/home/robocomp/robocomp/classes/grid2d/grid.h"
+#include <innermodel/innermodel.h>
 
 class SpecificWorker : public GenericWorker
 {
@@ -42,31 +38,16 @@ public:
 	~SpecificWorker();
 	bool setParams(RoboCompCommonBehavior::ParameterList params);
 
+
+
 public slots:
 	void compute();
 	int startup_check();
 	void initialize(int period);
-    void new_target_slot(QPointF);
-    void new_tilt_value_slot(int);
-    void sweep_button_slot(bool);
-    void trace_button_slot(bool);
-
 private:
+	std::shared_ptr < InnerModel > innerModel;
 	bool startup_check_flag;
-    AbstractGraphicViewer *viewer;
 
-    //robot
-    const int ROBOT_LENGTH = 400;
-    QGraphicsPolygonItem *robot_polygon;
-    QGraphicsEllipseItem *laser_in_robot_polygon;
-    QPointF last_point;
-    std::vector<QGraphicsLineItem *> lines;
-    void draw_laser(const RoboCompLaser::TLaserData &ldata);
-
-    // grid
-    int TILE_SIZE = 100;
-    QRectF dimensions;
-    Grid grid;
 };
 
 #endif
