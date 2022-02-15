@@ -45,6 +45,7 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 //		innerModel = std::make_shared(innermodel_path);
 //	}
 //	catch(const std::exception &e) { qFatal("Error reading config params"); }
+try {
     auto left_x = std::stod(params.at("left_x").value);
     auto top_y = std::stod(params.at("top_y").value);
     auto width = std::stod(params.at("width").value);
@@ -53,6 +54,9 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
     qInfo() << __FUNCTION__ << " Read parameters: " << left_x << top_y << width << height << tile;
     this->dimensions = QRectF(left_x, top_y, width, height);
     TILE_SIZE = tile;
+}
+catch(const std::exception &e) { std::cout << "Error reading config params" << std::endl; }
+
     return true;
 }
 
@@ -60,6 +64,7 @@ void SpecificWorker::initialize(int period)
 {
     std::cout << "Initialize worker" << std::endl;
 
+    dimensions = QRectF(-5000, -2500, 10000, 5000);
     viewer = new AbstractGraphicViewer(this->frame, this->dimensions);
     this->resize(900,450);
     auto [rp, lp] = viewer->add_robot(ROBOT_LENGTH, ROBOT_LENGTH);
@@ -79,7 +84,7 @@ void SpecificWorker::initialize(int period)
 
 
     // grid
-    grid.initialize(dimensions, TILE_SIZE, &viewer->scene, false);
+    //grid.initialize(dimensions, TILE_SIZE, &viewer->scene, false);
 
     this->Period = period;;
     if(this->startup_check_flag)
