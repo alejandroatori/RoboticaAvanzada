@@ -45,28 +45,46 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 //		innerModel = std::make_shared(innermodel_path);
 //	}
 //	catch(const std::exception &e) { qFatal("Error reading config params"); }
-
-
-
-
-
-
-	return true;
+    auto left_x = std::stod(params.at("left_x").value);
+    auto top_y = std::stod(params.at("top_y").value);
+    auto width = std::stod(params.at("width").value);
+    auto height = std::stod(params.at("height").value);
+    auto tile = std::stod(params.at("tile").value);
+    qInfo() << __FUNCTION__ << " Read parameters: " << left_x << top_y << width << height << tile;
+    this->dimensions = QRectF(left_x, top_y, width, height);
+    TILE_SIZE = tile;
+    return true;
 }
 
 void SpecificWorker::initialize(int period)
 {
-	std::cout << "Initialize worker" << std::endl;
-	this->Period = period;
-	if(this->startup_check_flag)
-	{
-		this->startup_check();
-	}
-	else
-	{
-		timer.start(Period);
-	}
+    std::cout << "Initialize worker" << std::endl;
 
+    viewer = new AbstractGraphicViewer(this->beta_frame, this->dimensions);
+    this->resize(900,450);
+    auto [rp, lp] = viewer->add_robot(ROBOT_LENGTH, ROBOT_LENGTH);
+    laser_in_robot_polygon = lp;
+    robot_polygon = rp;
+    try
+    {
+        RoboCompGenericBase::TBaseState bState;
+        differentialrobot_proxy->getBaseState(bState);
+        last_point = QPointF(bState.x, bState.z);
+    }
+    catch(const Ice::Exception &e) { std::cout << e.what() << std::endl;}
+
+    connect(viewer, &AbstractGraphicViewer::new_mouse_coordinates, this, &SpecificWorker::new_target_slot);
+
+
+
+    // grid
+    grid.initialize(dimensions, TILE_SIZE, &viewer->scene, false);
+
+    this->Period = period;
+    if(this->startup_check_flag)
+        this->startup_check();
+    else
+        timer.start(Period);
 }
 
 void SpecificWorker::compute()
@@ -83,15 +101,78 @@ void SpecificWorker::compute()
 	//{
 	//  std::cout << "Error reading from Camera" << e << std::endl;
 	//}
-	
+
+    try
+    {
+        RoboCompFullPoseEstimation::FullPoseEuler bState;
+        bState = fullposeestimation_proxy->getFullPoseEuler();
+        qInfo()  << bState.x << bState.y << bState.rz;
+
+        robot_polygon->setRotation(bState.rz*180/M_PI);
+        robot_polygon->setPos(bState.x, bState.y);
+
+        //speed_lcd->display(fullposeestimation_proxy->)
+        //TODO speed LCD
+        
+        posx_lcd->display(bState.x);
+        posz_lcd->display(bState.z);
+
+    }
+    catch(const Ice::Exception &e){ std::cout << e.what() << "POSE ERROR" << std::endl;}
+
+    // camera-tablet
+    try
+    {
+        cv::Mat top_img_uncomp;
+        QImage top_qimg;
+        auto top_img = camerasimple_proxy->getImage();
+        if(not top_img.image.empty())
+        {
+            if (top_img.compressed)
+            {
+                top_img_uncomp = cv::imdecode(top_img.image, -1);
+                top_qimg = QImage(top_img_uncomp.data, top_img.width, top_img.height, QImage::Format_RGB888).scaled(
+                        top_camera_label->width(), top_camera_label->height(), Qt::KeepAspectRatioByExpanding);;
+            } else
+                top_qimg = QImage(&top_img.image[0], top_img.width, top_img.height, QImage::Format_RGB888).scaled(
+                        top_camera_label->width(), top_camera_label->height(), Qt::KeepAspectRatioByExpanding);;
+            auto pix = QPixmap::fromImage(top_qimg);
+            top_camera_label->setPixmap(pix);
+        }
+    }
+    catch(const Ice::Exception &e){ std::cout << e.what() << "CAMERA ERROR" << std::endl;}
 	
 }
 
+void SpecificWorker::draw_laser(const RoboCompLaser::TLaserData &ldata) // robot coordinates
+{
+    static QGraphicsItem *laser_polygon = nullptr;
+    if (laser_polygon != nullptr)
+        viewer->scene.removeItem(laser_polygon);
+
+    QPolygonF poly;
+    poly << QPointF(0,0);
+    for(auto &&l : ldata)
+        poly << QPointF(l.dist*sin(l.angle), l.dist*cos(l.angle));
+    poly.pop_back();
+
+    QColor color("LightGreen");
+    color.setAlpha(40);
+    laser_polygon = viewer->scene.addPolygon(laser_in_robot_polygon->mapToScene(poly), QPen(QColor("DarkGreen"), 30), QBrush(color));
+    laser_polygon->setZValue(3);
+}
+void SpecificWorker::new_target_slot(QPointF target)
+{
+    qInfo() << __FUNCTION__ << " Received new target at " << target;
+}
+
+
+
 int SpecificWorker::startup_check()
 {
-	std::cout << "Startup check" << std::endl;
-	QTimer::singleShot(200, qApp, SLOT(quit()));
-	return 0;
+    std::cout << "Startup check" << std::endl;
+    QTimer::singleShot(200, qApp, SLOT(quit()));
+    return 0;
 }
 
 

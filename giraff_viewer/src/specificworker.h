@@ -28,26 +28,45 @@
 #define SPECIFICWORKER_H
 
 #include <genericworker.h>
-#include <innermodel/innermodel.h>
+
+#include <QGraphicsPolygonItem>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+#include <grid2d/grid.h>
+#include <abstract_graphic_viewer/abstract_graphic_viewer.h>
+
 
 class SpecificWorker : public GenericWorker
 {
 Q_OBJECT
 public:
-	SpecificWorker(TuplePrx tprx, bool startup_check);
-	~SpecificWorker();
-	bool setParams(RoboCompCommonBehavior::ParameterList params);
-
-
+    SpecificWorker(TuplePrx tprx, bool startup_check);
+    ~SpecificWorker();
+    bool setParams(RoboCompCommonBehavior::ParameterList params);
 
 public slots:
-	void compute();
-	int startup_check();
-	void initialize(int period);
-private:
-	std::shared_ptr < InnerModel > innerModel;
-	bool startup_check_flag;
+    void compute();
+    int startup_check();
+    void initialize(int period);
+    void new_target_slot(QPointF);
 
+private:
+    bool startup_check_flag;
+    AbstractGraphicViewer *viewer;
+
+    //robot
+    const int ROBOT_LENGTH = 400;
+    QGraphicsPolygonItem *robot_polygon;
+    QGraphicsEllipseItem *laser_in_robot_polygon;
+    QPointF last_point;
+    std::vector<QGraphicsLineItem *> lines;
+    void draw_laser(const RoboCompLaser::TLaserData &ldata);
+
+    // grid
+    int TILE_SIZE = 100;
+    QRectF dimensions;
+    Grid grid;
 };
 
 #endif
