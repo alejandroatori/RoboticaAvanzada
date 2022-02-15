@@ -63,6 +63,8 @@ private:
     std::vector<QGraphicsLineItem *> lines;
     void draw_laser(const RoboCompLaser::TLaserData &ldata);
 
+    void setRobotSpeed(float speed, float rot);
+
     // grid
     int TILE_SIZE = 100;
     QRectF dimensions;

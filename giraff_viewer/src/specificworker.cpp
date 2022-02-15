@@ -60,7 +60,7 @@ void SpecificWorker::initialize(int period)
 {
     std::cout << "Initialize worker" << std::endl;
 
-    viewer = new AbstractGraphicViewer(this->beta_frame, this->dimensions);
+    viewer = new AbstractGraphicViewer(this->frame, this->dimensions);
     this->resize(900,450);
     auto [rp, lp] = viewer->add_robot(ROBOT_LENGTH, ROBOT_LENGTH);
     laser_in_robot_polygon = lp;
@@ -69,6 +69,7 @@ void SpecificWorker::initialize(int period)
     {
         RoboCompGenericBase::TBaseState bState;
         differentialrobot_proxy->getBaseState(bState);
+        setRobotSpeed(0,0);
         last_point = QPointF(bState.x, bState.z);
     }
     catch(const Ice::Exception &e) { std::cout << e.what() << std::endl;}
@@ -80,11 +81,17 @@ void SpecificWorker::initialize(int period)
     // grid
     grid.initialize(dimensions, TILE_SIZE, &viewer->scene, false);
 
-    this->Period = period;
+    this->Period = period;;
     if(this->startup_check_flag)
         this->startup_check();
     else
         timer.start(Period);
+}
+
+void SpecificWorker::setRobotSpeed(float speed, float rot)
+{
+    differentialrobot_proxy->setSpeedBase(speed, rot);
+    this->speed->display(speed);
 }
 
 void SpecificWorker::compute()
@@ -112,10 +119,9 @@ void SpecificWorker::compute()
         robot_polygon->setPos(bState.x, bState.y);
 
         //speed_lcd->display(fullposeestimation_proxy->)
-        //TODO speed LCD
-        
-        posx_lcd->display(bState.x);
-        posz_lcd->display(bState.z);
+
+        pos_x->display(bState.x);
+        pos_z->display(bState.z);
 
     }
     catch(const Ice::Exception &e){ std::cout << e.what() << "POSE ERROR" << std::endl;}
