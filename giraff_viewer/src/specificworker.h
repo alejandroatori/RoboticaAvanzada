@@ -36,10 +36,19 @@
 #include <grid2d/grid.h>
 #include <abstract_graphic_viewer/abstract_graphic_viewer.h>
 
+#define MAX_SPEED 300
+
+
 
 class SpecificWorker : public GenericWorker
 {
 Q_OBJECT
+    struct Target
+    {
+        bool active = false;
+        QPointF dest;
+    };
+
 public:
     SpecificWorker(TuplePrx tprx, bool startup_check);
     ~SpecificWorker();
@@ -69,6 +78,13 @@ private:
     int TILE_SIZE = 100;
     QRectF dimensions;
     Grid grid;
+
+    //target
+    int state;
+    Target target;
+    float dist;
+    float beta;
+    void world_to_robot(Eigen::Vector2f, Eigen::Vector2f, RoboCompGenericBase::TBaseState);
 };
 
 #endif

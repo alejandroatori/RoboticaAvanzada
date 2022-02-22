@@ -17,7 +17,7 @@
  *    along with RoboComp.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "specificworker.h"
-
+//TODO replace bstate.alpha by bstate.rz
 /**
 * \brief Default constructor
 */
@@ -31,7 +31,7 @@ SpecificWorker::SpecificWorker(TuplePrx tprx, bool startup_check) : GenericWorke
 */
 SpecificWorker::~SpecificWorker()
 {
-	std::cout << "Destroying SpecificWorker" << std::endl;
+	std::cout << "Destroying S;pecificWorker" << std::endl;
 }
 
 bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
@@ -99,6 +99,20 @@ void SpecificWorker::setRobotSpeed(float speed, float rot)
     this->speed->display(speed);
 }
 
+float speed_multiplier(float rot, float dist)
+{
+    float rot_factor, dist_factor;
+    if(rot > 1)
+        rot = 1;
+    if(rot < -1)
+        rot = -1;
+    rot_factor = exp(pow(-rot, 2));
+    if(dist > 1000)
+        dist = 1000;
+    dist_factor = dist/1000;
+    return (rot_factor * dist_factor);
+}
+
 void SpecificWorker::compute()
 {
 	//computeCODE
@@ -114,14 +128,21 @@ void SpecificWorker::compute()
 	//  std::cout << "Error reading from Camera" << e << std::endl;
 	//}
 
+    Eigen::Vector2f robot_eigen, target_eigen;
+
+    RoboCompGenericBase::TBaseState bState;
+
     try
     {
-        RoboCompFullPoseEstimation::FullPoseEuler bState;
-        bState = fullposeestimation_proxy->getFullPoseEuler();
-        qInfo()  << bState.x << bState.y << bState.rz;
 
-        robot_polygon->setRotation(bState.rz*180/M_PI);
-        robot_polygon->setPos(bState.x, bState.y);
+        //bState = fullposeestimation_proxy->getFullPoseEuler();
+        differentialrobot_proxy->getBaseState(bState);
+        qInfo()  << bState.x << bState.z << bState.alpha;
+
+        robot_polygon->setRotation(bState.alpha*180/M_PI);
+        robot_polygon->setPos(bState.x, bState.z);
+
+        //robot_eigen = Eigen::Vector2f(bState.x, bState.z);
 
         //speed_lcd->display(fullposeestimation_proxy->)
 
@@ -130,6 +151,33 @@ void SpecificWorker::compute()
 
     }
     catch(const Ice::Exception &e){ std::cout << e.what() << "POSE ERROR" << std::endl;}
+
+    if(target.active)
+    {
+        Eigen::Vector2f target_eigen(target.dest.x(), target.dest.y());
+        Eigen::Vector2f robot_eigen(bState.x, bState.z);
+        world_to_robot(robot_eigen, target_eigen, bState);
+        try
+        {
+            cout << "dist: " << this->dist << "\t" << "beta: " << beta << endl;
+            if(dist < 100)
+            {
+                cout << "reached target" << endl;
+                target.active = false;
+                setRobotSpeed(0,0);
+                return;
+            }
+            else
+            {
+                float speed = MAX_SPEED * speed_multiplier(beta, dist);
+                setRobotSpeed(speed, beta);
+            }
+        }
+        catch(const Ice::Exception &e)
+        {
+            std::cout << e.what() <<std::endl;
+        };
+    }
 
     // camera-tablet
     try
@@ -151,7 +199,7 @@ void SpecificWorker::compute()
             top_camera_label->setPixmap(pix);
         }
     }
-    catch(const Ice::Exception &e){ std::cout << e.what() << "CAMERA ERROR" << std::endl;}
+    catch(const Ice::Exception &e){ /*std::cout << e.what() << "CAMERA ERROR" << std::endl;*/}
 	
 }
 
@@ -175,6 +223,20 @@ void SpecificWorker::draw_laser(const RoboCompLaser::TLaserData &ldata) // robot
 void SpecificWorker::new_target_slot(QPointF target)
 {
     qInfo() << __FUNCTION__ << " Received new target at " << target;
+    qInfo() << target;
+    this->target.dest = target;
+    this->target.active = true;
+}
+
+void SpecificWorker::world_to_robot(Eigen::Vector2f robot_eigen,
+                                    Eigen::Vector2f target_eigen,
+                                    RoboCompGenericBase::TBaseState bState)
+{
+    Eigen::Matrix2f rot;
+    rot << cos(bState.alpha), -sin(bState.alpha), sin(bState.alpha), cos(bState.alpha);
+    auto tr = rot.transpose() * (target_eigen - robot_eigen);
+    this->beta = atan2(tr(0), tr(1));
+    this->dist = tr.norm();
 }
 
 
