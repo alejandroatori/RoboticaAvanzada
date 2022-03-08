@@ -35,7 +35,10 @@
 #include <opencv2/imgproc.hpp>
 #include <grid2d/grid.h>
 #include <abstract_graphic_viewer/abstract_graphic_viewer.h>
-
+#include "HumanCameraBody.h"
+#include <jsoncpp/json/json.h>
+#include <iostream>
+#include <fstream>
 
 class SpecificWorker : public GenericWorker
 {
@@ -61,6 +64,10 @@ private:
     QGraphicsEllipseItem *laser_in_robot_polygon;
     QPointF last_point;
     std::vector<QGraphicsLineItem *> lines;
+
+    map<string, list<int>> mapaArticulaciones;
+
+
     void draw_laser(const RoboCompLaser::TLaserData &ldata);
 
     void setRobotSpeed(float speed, float rot);
@@ -69,6 +76,9 @@ private:
     int TILE_SIZE = 100;
     QRectF dimensions;
     Grid grid;
+
+    void draw_skeletons(cv::Mat &image, const RoboCompHumanCameraBody::PeopleData &people_data);
+    std::pair<float, float> calcularTarget(cv::Mat &image, const RoboCompHumanCameraBody::PeopleData &people_data);
 };
 
 #endif

@@ -82,6 +82,25 @@ void SpecificWorker::initialize(int period)
     connect(viewer, &AbstractGraphicViewer::new_mouse_coordinates, this, &SpecificWorker::new_target_slot);
 
 
+//    ifstream human_body_parts_file("/home/alumno/RoboticaAvanzada/giraff_viewer/src/human_pose.json");
+//    Json::Reader reader;
+//    Json::Value objeto_json;
+//
+//    reader.parse(human_body_parts_file, objeto_json);
+//    const Json::Value& cadena_clave = objeto_json["keypoints"];
+//    const Json::Value& cadena_valor = objeto_json["skeleton"];
+////    if (human_body_parts_file.is_open()){
+////        cout << "Fichero abierto bien" << endl;
+////    }
+////
+////    cout << "Inicio - size " << cadena_clave.size() << endl;
+////
+//    for (int i=0; i<cadena_valor.size(); i++)
+//    {
+//        cout << cadena_clave[cadena_valor[i][0].asInt()].asString() << " - " << cadena_clave[cadena_valor[i][1].asInt()].asString() << endl;
+//    }
+//
+//    exit(-1);
 
     // grid
     //grid.initialize(dimensions, TILE_SIZE, &viewer->scene, false);
@@ -93,66 +112,68 @@ void SpecificWorker::initialize(int period)
         timer.start(Period);
 }
 
-void SpecificWorker::setRobotSpeed(float speed, float rot)
-{
-    differentialrobot_proxy->setSpeedBase(speed, rot);
-    this->speed->display(speed);
-}
 
 void SpecificWorker::compute()
 {
-	//computeCODE
-	//QMutexLocker locker(mutex);
-	//try
-	//{
-	//  camera_proxy->getYImage(0,img, cState, bState);
-	//  memcpy(image_gray.data, &img[0], m_width*m_height*sizeof(uchar));
-	//  searchTags(image_gray);
-	//}
-	//catch(const Ice::Exception &e)
-	//{
-	//  std::cout << "Error reading from Camera" << e << std::endl;
-	//}
-
-    try
-    {
-        RoboCompFullPoseEstimation::FullPoseEuler bState;
-        bState = fullposeestimation_proxy->getFullPoseEuler();
-        qInfo()  << bState.x << bState.y << bState.rz;
-
-        robot_polygon->setRotation(bState.rz*180/M_PI);
-        robot_polygon->setPos(bState.x, bState.y);
-
-        //speed_lcd->display(fullposeestimation_proxy->)
-
-        pos_x->display(bState.x);
-        pos_z->display(bState.z);
-
-    }
-    catch(const Ice::Exception &e){ std::cout << e.what() << "POSE ERROR" << std::endl;}
-
-    // camera-tablet
+    // camera-ojo
     try
     {
         cv::Mat top_img_uncomp;
         QImage top_qimg;
-        auto top_img = camerasimple_proxy->getImage();
+        auto top_img = camerargbdsimple_proxy->getImage("");
+        auto people = humancamerabody_proxy->newPeopleData();
+
         if(not top_img.image.empty())
         {
-            if (top_img.compressed)
+            if (!top_img.compressed)
             {
                 top_img_uncomp = cv::imdecode(top_img.image, -1);
+                cv::cvtColor(top_img_uncomp, top_img_uncomp, cv::COLOR_BGR2RGB);
+                draw_skeletons(top_img_uncomp, people);
                 top_qimg = QImage(top_img_uncomp.data, top_img.width, top_img.height, QImage::Format_RGB888).scaled(
-                        top_camera_label->width(), top_camera_label->height(), Qt::KeepAspectRatioByExpanding);;
-            } else
-                top_qimg = QImage(&top_img.image[0], top_img.width, top_img.height, QImage::Format_RGB888).scaled(
-                        top_camera_label->width(), top_camera_label->height(), Qt::KeepAspectRatioByExpanding);;
+                        bottom_camera_label->width(), bottom_camera_label->height(), Qt::KeepAspectRatioByExpanding);;
+            } else {
+                top_img_uncomp = cv::Mat(top_img.width, top_img.height, CV_8UC3, const_cast<std::vector<uint8_t>&>(top_img.image).data());
+                cv::cvtColor(top_img_uncomp, top_img_uncomp, cv::COLOR_BGR2RGB);
+                draw_skeletons(top_img_uncomp, people);
+                top_qimg = QImage(top_img_uncomp.data, top_img.height, top_img.width, QImage::Format_RGB888).scaled(
+                        bottom_camera_label->width(), bottom_camera_label->height(), Qt::KeepAspectRatioByExpanding);;
+            }
             auto pix = QPixmap::fromImage(top_qimg);
-            top_camera_label->setPixmap(pix);
+            bottom_camera_label->setPixmap(pix);
         }
     }
-    catch(const Ice::Exception &e){ std::cout << e.what() << "CAMERA ERROR" << std::endl;}
-	
+    catch(const Ice::Exception &e){ std::cout << e.what() << "CAMERA EYE ERROR" << std::endl;}
+
+    //camera
+//    try
+//    {
+//        cv::Mat top_img_uncomp2;
+//        QImage top_qimg2;
+//        auto top_img2 = camerasimple_proxy->getImage();
+//        if(not top_img2.image.empty())
+//        {
+//            if (top_img2.compressed)
+//            {
+//                top_img_uncomp2 = cv::imdecode(top_img2.image, -1);
+//                cv::cvtColor(top_img_uncomp2, top_img_uncomp2, cv::COLOR_BGR2RGB);
+//                top_qimg2 = QImage(top_img_uncomp2.data, top_img2.width, top_img2.height, QImage::Format_RGB888).scaled(
+//                        top_camera_label->width(), top_camera_label->height(), Qt::KeepAspectRatioByExpanding);
+//            } else
+//                top_qimg2 = QImage(&top_img2.image[0], top_img2.width, top_img2.height, QImage::Format_RGB888).scaled(
+//                        top_camera_label->width(), top_camera_label->height(), Qt::KeepAspectRatioByExpanding);
+//            auto pix = QPixmap::fromImage(top_qimg2);
+//            top_camera_label->setPixmap(pix);
+//        }
+//    }
+//    catch(const Ice::Exception &e){ std::cout << e.what() << "CAMERA ERROR" << std::endl;}
+
+}
+///////////////////////////////////////////////////////////////7777
+void SpecificWorker::setRobotSpeed(float speed, float rot)
+{
+    differentialrobot_proxy->setSpeedBase(speed, rot);
+    this->speed->display(speed);
 }
 
 void SpecificWorker::draw_laser(const RoboCompLaser::TLaserData &ldata) // robot coordinates
@@ -172,6 +193,110 @@ void SpecificWorker::draw_laser(const RoboCompLaser::TLaserData &ldata) // robot
     laser_polygon = viewer->scene.addPolygon(laser_in_robot_polygon->mapToScene(poly), QPen(QColor("DarkGreen"), 30), QBrush(color));
     laser_polygon->setZValue(3);
 }
+void SpecificWorker::draw_skeletons(cv::Mat &image, const RoboCompHumanCameraBody::PeopleData &people_data) {
+    calcularTarget(image, people_data);
+
+    ifstream human_body_parts_file("/home/alumno/RoboticaAvanzada/giraff_viewer/src/human_pose.json");
+    Json::Reader reader;
+    Json::Value objeto_json;
+
+    reader.parse(human_body_parts_file, objeto_json);
+    const Json::Value &cadena_clave = objeto_json["keypoints"];
+    const Json::Value &cadena_valor = objeto_json["skeleton"];
+    std::pair<int, int> lista_articulaciones[cadena_valor.size()];
+
+    for (int i = 0; i < cadena_valor.size(); i++) {
+            lista_articulaciones[i].first = cadena_valor[i][0].asInt();
+            lista_articulaciones[i].second = cadena_valor[i][1].asInt();
+    }
+
+    for( const auto &person : people_data.peoplelist)
+    {
+        for(const auto &[name1, name2] :  lista_articulaciones)
+        {
+            if(person.joints.contains(std::to_string(name1)) and person.joints.contains(std::to_string(name2)))
+            {
+                //cout << "draw skeletons" <<endl;
+                auto joint1 = person.joints.at(std::to_string(name1));
+                auto joint2 = person.joints.at(std::to_string(name2));
+                cv::line(image, cv::Point(joint1.i, joint1.j), cv::Point(joint2.i, joint2.j), cv::Scalar(0, 255, 0), 2);
+            }
+        }
+    }
+
+//    for (const auto &person: people_data.peoplelist)
+//    {
+//        for (int i = 0; i < cadena_valor.size(); i++) {
+//            lista_articulaciones[i].first = cadena_clave[cadena_valor[i][0].asInt()].asString();
+//            lista_articulaciones[i].second = cadena_clave[cadena_valor[i][1].asInt()].asString();
+//
+//            auto joint1 = person.joints.at(lista_articulaciones[i].first);
+//            auto joint2 = person.joints.at(cadena_clave[cadena_valor[i][1].asInt()].asString());
+//            cout << joint1.x << " --- " << joint2.x << endl;
+//            cv::line(image, cv::Point(joint1.i, joint1.j), cv::Point(joint2.i, joint2.j), cv::Scalar(0, 255, 0), 2);
+//        }
+//    }
+}
+
+std::pair<float, float> SpecificWorker::calcularTarget(cv::Mat &image, const RoboCompHumanCameraBody::PeopleData &people_data)
+{
+    float suma_x;
+    float suma_z;
+    float media_x;
+    float media_z;
+    float suma_i;
+    float suma_j;
+    float media_i;
+    float media_j;
+
+    std::pair<float, float> target;
+    int contador = 0;
+
+    const auto &person = people_data.peoplelist[0];
+    if (!people_data.peoplelist.empty())
+    {
+        if (person.joints.contains("1"))
+        {
+            cout << "X: " << person.joints.at("1").x << endl
+                 << "Y: " << person.joints.at("1").y << endl
+                 << "Z: " << person.joints.at("1").z << endl;
+            exit(-1);
+        }
+        for (auto &[k, v]: person.joints)
+        {
+            auto joint = person.joints.at(k);
+
+            suma_i += joint.i;
+            suma_j += joint.j;
+
+            // eje z
+            suma_z += joint.z;
+
+            // eje x
+            suma_x += joint.x;
+
+            contador++;
+        }
+
+        // centro esqueleto
+        media_i = suma_i / contador;
+        media_j = suma_j / contador;
+
+        media_x = suma_x / contador;
+        media_z = suma_z / contador;
+
+        target.first = media_x;
+        target.second = media_z;
+
+        cout << "PUNTO MEDIO: " << target.first << ", " << target.second << endl;
+
+        cv::Point punto_medio((int)media_x, (int)media_z);
+        cv::circle(image, punto_medio, 0, (0, 0, 0), 10);
+    }
+
+    return target;
+}
+//////////////////////////////////////////////////////////////////7
 void SpecificWorker::new_target_slot(QPointF target)
 {
     qInfo() << __FUNCTION__ << " Received new target at " << target;
@@ -260,4 +385,5 @@ int SpecificWorker::startup_check()
 // From the RoboCompLaser you can use this types:
 // RoboCompLaser::LaserConfData
 // RoboCompLaser::TData
+
 
