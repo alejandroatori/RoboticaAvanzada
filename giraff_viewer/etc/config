@@ -1,11 +1,11 @@
 CommonBehavior.Endpoints=tcp -p 10000
 
 # Proxies for required interfaces
-CameraRGBDSimpleProxy = camerargbdsimple:tcp -h localhost -p 0
-CameraSimpleProxy = camerasimple:tcp -h localhost -p 0
+CameraRGBDSimpleProxy = camerargbdsimple:tcp -h localhost -p 10096
+CameraSimpleProxy = camerasimple:tcp -h localhost -p 10097
 DifferentialRobotProxy = differentialrobot:tcp -h localhost -p 10004
-FullPoseEstimationProxy = fullposeestimation:tcp -h localhost -p 0
-JointMotorSimpleProxy = jointmotorsimple:tcp -h localhost -p 0
+FullPoseEstimationProxy = fullposeestimation:tcp -h localhost -p 10216
+JointMotorSimpleProxy = jointmotorsimple:tcp -h localhost -p 10086
 LaserProxy = laser:tcp -h localhost -p 10003
 
 

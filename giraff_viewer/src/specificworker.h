@@ -84,7 +84,7 @@ private:
     Target target;
     float dist;
     float beta;
-    void world_to_robot(Eigen::Vector2f, Eigen::Vector2f, RoboCompGenericBase::TBaseState);
+    void world_to_robot(Eigen::Vector2f, Eigen::Vector2f, RoboCompFullPoseEstimation::FullPoseEuler);
 };
 
 #endif

@@ -130,32 +130,32 @@ void SpecificWorker::compute()
 
     Eigen::Vector2f robot_eigen, target_eigen;
 
-    RoboCompGenericBase::TBaseState bState;
+    RoboCompFullPoseEstimation::FullPoseEuler bState;
 
     try
     {
 
-        //bState = fullposeestimation_proxy->getFullPoseEuler();
-        differentialrobot_proxy->getBaseState(bState);
-        qInfo()  << bState.x << bState.z << bState.alpha;
+        bState = fullposeestimation_proxy->getFullPoseEuler();
+        //differentialrobot_proxy->getBaseState(bState);
+        qInfo()  << bState.x << bState.y << bState.rz;
 
-        robot_polygon->setRotation(bState.alpha*180/M_PI);
-        robot_polygon->setPos(bState.x, bState.z);
+        robot_polygon->setRotation(bState.rz*180/M_PI);
+        robot_polygon->setPos(bState.x, bState.y);
 
-        //robot_eigen = Eigen::Vector2f(bState.x, bState.z);
+        //robot_eigen = Eigen::Vector2f(bState.x, bState.y);
 
         //speed_lcd->display(fullposeestimation_proxy->)
 
         pos_x->display(bState.x);
-        pos_z->display(bState.z);
+        pos_z->display(bState.y);
 
     }
-    catch(const Ice::Exception &e){ std::cout << e.what() << "POSE ERROR" << std::endl;}
+    catch(const Ice::Exception &e){ std::cout << e.what() << " POSE ERROR" << std::endl;}
 
     if(target.active)
     {
         Eigen::Vector2f target_eigen(target.dest.x(), target.dest.y());
-        Eigen::Vector2f robot_eigen(bState.x, bState.z);
+        Eigen::Vector2f robot_eigen(bState.x, bState.y);
         world_to_robot(robot_eigen, target_eigen, bState);
         try
         {
@@ -230,10 +230,10 @@ void SpecificWorker::new_target_slot(QPointF target)
 
 void SpecificWorker::world_to_robot(Eigen::Vector2f robot_eigen,
                                     Eigen::Vector2f target_eigen,
-                                    RoboCompGenericBase::TBaseState bState)
+                                    RoboCompFullPoseEstimation::FullPoseEuler bState)
 {
     Eigen::Matrix2f rot;
-    rot << cos(bState.alpha), -sin(bState.alpha), sin(bState.alpha), cos(bState.alpha);
+    rot << cos(bState.rz), -sin(bState.rz), sin(bState.rz), cos(bState.rz);
     auto tr = rot.transpose() * (target_eigen - robot_eigen);
     this->beta = atan2(tr(0), tr(1));
     this->dist = tr.norm();
