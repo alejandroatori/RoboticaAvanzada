@@ -40,13 +40,23 @@
 #include <iostream>
 #include <fstream>
 
+#define MAX_SPEED 300
+
 class SpecificWorker : public GenericWorker
 {
 Q_OBJECT
+    struct Target
+    {
+        bool active = false;
+        QPointF dest;
+    };
+
 public:
     SpecificWorker(TuplePrx tprx, bool startup_check);
     ~SpecificWorker();
     bool setParams(RoboCompCommonBehavior::ParameterList params);
+
+
 
 public slots:
     void compute();
@@ -77,8 +87,19 @@ private:
     QRectF dimensions;
     Grid grid;
 
+    //target
+    int state;
+    Target target;
+    float dist;
+    float beta;
+    void world_to_robot(Eigen::Vector2f robot_eigen, Eigen::Vector2f target_eigen, RoboCompFullPoseEstimation::FullPoseEuler bState);
+
     void draw_skeletons(cv::Mat &image, const RoboCompHumanCameraBody::PeopleData &people_data);
     std::pair<float, float> calcularTarget(cv::Mat &image, const RoboCompHumanCameraBody::PeopleData &people_data);
+    void cameraSetUp(const RoboCompHumanCameraBody::PeopleData &people_data);
+    std::pair<float, float> printPoint(const RoboCompHumanCameraBody::PeopleData &people_data);
+    float speed_multiplier(float rot, float dist);
+
 };
 
 #endif
