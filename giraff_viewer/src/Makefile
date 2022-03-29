@@ -48,10 +48,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/180/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /snap/clion/184/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /snap/clion/180/bin/cmake/linux/bin/cmake -E rm -f
+RM = /snap/clion/184/bin/cmake/linux/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -68,13 +68,13 @@ CMAKE_BINARY_DIR = /home/alumno/robocomp/components/beta-robotica-class/Robotica
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/snap/clion/180/bin/cmake/linux/bin/cmake -P cmake_install.cmake
+	/snap/clion/184/bin/cmake/linux/bin/cmake -P cmake_install.cmake
 .PHONY : install
 
 # Special rule for the target install
 install/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/snap/clion/180/bin/cmake/linux/bin/cmake -P cmake_install.cmake
+	/snap/clion/184/bin/cmake/linux/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
 # Special rule for the target list_install_components
@@ -89,7 +89,7 @@ list_install_components/fast: list_install_components
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/snap/clion/180/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/snap/clion/184/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -99,31 +99,31 @@ edit_cache/fast: edit_cache
 # Special rule for the target install/strip
 install/strip: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/snap/clion/180/bin/cmake/linux/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+	/snap/clion/184/bin/cmake/linux/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip
 
 # Special rule for the target install/strip
 install/strip/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/snap/clion/180/bin/cmake/linux/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+	/snap/clion/184/bin/cmake/linux/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
 
 # Special rule for the target install/local
 install/local: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/snap/clion/180/bin/cmake/linux/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+	/snap/clion/184/bin/cmake/linux/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local
 
 # Special rule for the target install/local
 install/local/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/snap/clion/180/bin/cmake/linux/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+	/snap/clion/184/bin/cmake/linux/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/snap/clion/180/bin/cmake/linux/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/snap/clion/184/bin/cmake/linux/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -515,6 +515,30 @@ main.cpp.s:
 	cd /home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/giraff_viewer.dir/build.make src/CMakeFiles/giraff_viewer.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+opt/robocomp/classes/grid2d/grid.o: opt/robocomp/classes/grid2d/grid.cpp.o
+.PHONY : opt/robocomp/classes/grid2d/grid.o
+
+# target to build an object file
+opt/robocomp/classes/grid2d/grid.cpp.o:
+	cd /home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/giraff_viewer.dir/build.make src/CMakeFiles/giraff_viewer.dir/opt/robocomp/classes/grid2d/grid.cpp.o
+.PHONY : opt/robocomp/classes/grid2d/grid.cpp.o
+
+opt/robocomp/classes/grid2d/grid.i: opt/robocomp/classes/grid2d/grid.cpp.i
+.PHONY : opt/robocomp/classes/grid2d/grid.i
+
+# target to preprocess a source file
+opt/robocomp/classes/grid2d/grid.cpp.i:
+	cd /home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/giraff_viewer.dir/build.make src/CMakeFiles/giraff_viewer.dir/opt/robocomp/classes/grid2d/grid.cpp.i
+.PHONY : opt/robocomp/classes/grid2d/grid.cpp.i
+
+opt/robocomp/classes/grid2d/grid.s: opt/robocomp/classes/grid2d/grid.cpp.s
+.PHONY : opt/robocomp/classes/grid2d/grid.s
+
+# target to generate assembly for a file
+opt/robocomp/classes/grid2d/grid.cpp.s:
+	cd /home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/giraff_viewer && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/giraff_viewer.dir/build.make src/CMakeFiles/giraff_viewer.dir/opt/robocomp/classes/grid2d/grid.cpp.s
+.PHONY : opt/robocomp/classes/grid2d/grid.cpp.s
+
 opt/robocomp/classes/qlog/qlog.o: opt/robocomp/classes/qlog/qlog.cpp.o
 .PHONY : opt/robocomp/classes/qlog/qlog.o
 
@@ -689,6 +713,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... opt/robocomp/classes/grid2d/grid.o"
+	@echo "... opt/robocomp/classes/grid2d/grid.i"
+	@echo "... opt/robocomp/classes/grid2d/grid.s"
 	@echo "... opt/robocomp/classes/qlog/qlog.o"
 	@echo "... opt/robocomp/classes/qlog/qlog.i"
 	@echo "... opt/robocomp/classes/qlog/qlog.s"
