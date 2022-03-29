@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/giraff_viewer_autogen"
-  "giraff_viewer_autogen/include/ui_mainUI.h"
   "giraff_viewer_autogen/mocs_compilation.cpp"
 )
 
