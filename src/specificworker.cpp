@@ -78,7 +78,7 @@ void SpecificWorker::initialize(int period)
 
 
     //Archivo json esqueleto
-    ifstream human_body_parts_file("/home/alumno/RoboticaAvanzada/giraff_viewer/src/human_pose.json");
+    ifstream human_body_parts_file("./human_pose.json");
     Json::Reader reader;
     Json::Value objeto_json;
 
