@@ -19,6 +19,7 @@
 #    along with RoboComp.  If not, see <http://www.gnu.org/licenses/>.
 #
 import time
+import traceback
 
 from PySide2.QtCore import QTimer
 from PySide2.QtWidgets import QApplication
@@ -46,6 +47,7 @@ TOLERANCE = 0.01
 
 
 class SpecificWorker(GenericWorker):
+
     def __init__(self, proxy_map, startup_check=False):
         super(SpecificWorker, self).__init__(proxy_map)
         self.motor = self.jointmotorsimple_proxy.getMotorState("")
@@ -57,6 +59,10 @@ class SpecificWorker(GenericWorker):
         else:
             self.timer.timeout.connect(self.compute)
             self.timer.start(self.Period)
+
+        self.act_people = []
+        self.known_people = []
+        self.main_person = None
 
     def __del__(self):
         """Destructor"""
@@ -87,11 +93,32 @@ class SpecificWorker(GenericWorker):
         # r.printvector('d')
         # print(r[0], r[1], r[2])
 
-        color = self.obtencion_datos()
+        color, people_data = self.obtencion_datos()
         image = np.frombuffer(color.image, np.uint8).reshape(color.width, color.height, color.depth)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        self.tracker_camera(color, 50)
+        image, person_pos_data = self.proceso_esqueleto(image, people_data)
+
+        puntoMedioX = -1
+        if self.known_people == []:
+            self.known_people = person_pos_data
+        else:
+            for person in person_pos_data:
+                id_similar = self.distance_comparison(person)
+                if id_similar != None: #persona detectada
+                    self.act_pos_info(person, id_similar)
+                    if person["x_pixel"] != -1:
+                        puntoMedioX = person["x_pixel"]
+                        print(puntoMedioX)
+
+        if puntoMedioX > -1 and self.track:
+            self.tracker_camera(color, puntoMedioX)
+
+        #TODO refrescar ventana
+        self.refesco_ventana(color, image)
+
+
+        #self.tracker_camera(color, 50)
         return True
 
     def startup_check(self):
@@ -103,12 +130,16 @@ class SpecificWorker(GenericWorker):
             self.motor = self.jointmotorsimple_proxy.getMotorState("")
         except:
             print("Error")
-
         try:
             color = self.camerargbdsimple_proxy.getImage("")
         except:
             print("Error2")
-        return color
+        try:
+            people_data = self.humancamerabody_proxy.newPeopleData()
+        except:
+            print("Human Camera Body Error")
+            traceback.print_exc()
+        return color, people_data
 
     k1 = 1.1
     k2 = 0.8
@@ -133,28 +164,27 @@ class SpecificWorker(GenericWorker):
         goal.position = goal_rad
         # mandamos al motor el objetivo
         self.jointmotorsimple_proxy.setPosition("", goal)
-        time.sleep(2)
+        #time.sleep(2)
 
 
 
 
     # #####################################Para pintar en la UI ################################
-    # def refesco_ventana(self, color, image):
-    #     qt_image = QImage(image, color.height, color.width, QImage.Format_RGB888)
-    #     pix = QPixmap.fromImage(qt_image).scaled(self.ui.label_image.width(), self.ui.label_image.height())
-    #     self.ui.label_image.setPixmap(pix)
-    #     # image = np.frombuffer(color.image, np.uint8).reshape(color.height, color.width, color.depth)
-    #
-    #     self.ui.lcdNumber_pos.display(self.motor.pos)
-    #     self.ui.lcdNumber_speed.display(self.motor.vel)
-    #     self.ui.lcdNumber_temp.display(self.motor.temperature)
-    #     self.ui.lcdNumber_max_speed.display(self.current_max_speed)
-    #     if self.motor.isMoving:
-    #         self.ui.radioButton_moving.setChecked(True)
-    #     else:
-    #         self.ui.radioButton_moving.setChecked(False)
+    def refesco_ventana(self, color, image):
+        qt_image = QImage(image, color.height, color.width, QImage.Format_RGB888)
+        pix = QPixmap.fromImage(qt_image).scaled(self.ui.label_image.width(), self.ui.label_image.height())
+        self.ui.label_image.setPixmap(pix)
+        # image = np.frombuffer(color.image, np.uint8).reshape(color.height, color.width, color.depth)
+        self.ui.lcdNumber_pos.display(self.motor.pos)
+        self.ui.lcdNumber_speed.display(self.motor.vel)
+        self.ui.lcdNumber_temp.display(self.motor.temperature)
+        self.ui.lcdNumber_max_speed.display(self.current_max_speed)
+        if self.motor.isMoving:
+            self.ui.radioButton_moving.setChecked(True)
+        else:
+            self.ui.radioButton_moving.setChecked(False)
 
-        # self.graph_tick()
+        #self.graph_tick()
 
     ######################
     # From the RoboCompCameraRGBDSimple you can call this methods:
