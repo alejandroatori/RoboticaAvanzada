@@ -17,6 +17,8 @@
  *    along with RoboComp.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "specificworker.h"
+#include <chrono>
+#include <thread>
 
 /**
 * \brief Default constructor
@@ -178,6 +180,12 @@ void SpecificWorker::compute()
     if (personaElegida != -1){
         drawPeopleMap(people, bState, personaElegida);
         rotateCamera(camerargbdsimple_proxy, target.dest.x());
+        if(k7 == 2){
+            exit(0);
+        }else{
+            k7++;
+        }
+
 //        moveRobot();
     }
     else{
@@ -258,7 +266,7 @@ void SpecificWorker::drawPeopleMap (const RoboCompHumanCameraBody::PeopleData &p
     //std::cout << "Persona elegida -> " << personaElegida << std::endl;
     const auto &person = people.peoplelist[personaElegida];
     if (!person.joints.contains("17")) {
-        std::cout << "puto" << std::endl;
+        std::cout << "contains 17" << std::endl;
     }
     auto cd = person.joints.at("17");
 
@@ -412,15 +420,23 @@ void SpecificWorker::moveRobot(){
     }
 }
 
+
+
 void SpecificWorker::rotateCamera(RoboCompCameraRGBDSimple::CameraRGBDSimplePrxPtr camerargbdsimple_proxy, float middleXPoint) {
+    //if(move)
+        //return;
     auto color = camerargbdsimple_proxy->getImage("");
     auto error = middleXPoint - (color.width/2);
     auto goal = RoboCompJointMotorSimple::MotorGoalPosition();
     auto der_error = -(error - this->last_error);
-    auto error_rads = atan2(k1*error+k2*der_error, color.focalx);
+    auto error_rads = atan2((k1*error)+(k2*der_error), color.focalx);
+    cout << error
     auto motor = jointmotorsimple_proxy->getMotorState("");
+
     auto goal_rad = motor.pos - error_rads;
-    cout<<"cam mehod" << endl;
+    cout << "Error rads: " << error_rads<< endl;
+    cout << "Goal rad: "<< goal_rad << endl;
+
     if((this->last_rad > (goal_rad + TOLERANCE)) ||
        (this->last_rad < (goal_rad -TOLERANCE)))
     {
@@ -428,25 +444,42 @@ void SpecificWorker::rotateCamera(RoboCompCameraRGBDSimple::CameraRGBDSimplePrxP
         auto rad_seg = abs(((last_rad - goal_rad) / this->Period) * 1000);
         if(abs(error_rads) > 0.3)
         {
+            cout << motor.pos << endl;
+
             goal.maxSpeed = 0;
+            cout << "usando 0 velocidad" << endl;
         }
         else
         {
+            cout << "if: " << abs(rad_seg) << endl;
             if(abs(rad_seg) < MIN_SPEED)
             {
+                cout << "usando minima velocidad" << endl;
                 goal.maxSpeed = MIN_SPEED;
             }
             else {
+                cout << "usando maxima velocidad" << endl;
                 goal.maxSpeed = rad_seg;
             }
         }
         goal.position = goal_rad;
 
-        cout << goal.position << endl;
-        cout << goal.maxSpeed << endl;
-        //goal.position = 1;
-        //goal.maxSpeed = 1;
+        cout <<"position objetivo: " << goal.position << endl;
+
+        auto motor = jointmotorsimple_proxy->getMotorState("");
+        cout << "Antes de moverse: " << motor.pos << endl;
+
         jointmotorsimple_proxy->setPosition("", goal);
+
+
+        //move = true;
+        //wait 5 seconds
+        std::this_thread::sleep_for(std::chrono::nanoseconds(5 * 1000000000));
+
+
+        auto motor2 = jointmotorsimple_proxy->getMotorState("");
+        cout << "Despues de moverse: " << motor2.pos << endl;
+
         auto pos_err = motor.pos - last_motor_pos;
 
         last_motor_pos = motor.pos;

@@ -99,14 +99,16 @@ private:
     float MIN_SPEED = 0.05;
     float last_motor_pos = 0;
 
-    float k1 = 1.1;
-    float k2 = 0.8;
+    float k1 = 0.9; //Valor anterior 1.1
+    float k2 = 0.7; //Valor anterior 0.8
     float k3 = 0.9;
     float k4 = 1;
     float k5 = 1;
     float k6 = 2;
-    float k7 = 5;
+    float k7 = 0;
     float TOLERANCE = 0.01;
+
+    //bool move = false;
     ////////////////////////////////////////////////////////////////////////////////////////
     void draw_laser(const RoboCompLaser::TLaserData &ldata);
     void world_to_robot5(Eigen::Vector2f robot_eigen, Eigen::Vector2f target_eigen, RoboCompFullPoseEstimation::FullPoseEuler bState);
