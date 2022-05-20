@@ -1,0 +1,17 @@
+CommonBehavior.Endpoints=tcp -p 10000
+
+# Proxies for required interfaces
+CameraRGBDSimpleProxy = camerargbdsimple:tcp -h 158.49.227.62 -p 14842
+CameraSimpleProxy = camerasimple:tcp -h 158.49.227.62 -p 10195
+DifferentialRobotProxy = differentialrobot:tcp -h 158.49.227.62 -p 10004
+FullPoseEstimationProxy = fullposeestimation:tcp -h 158.49.227.62 -p 10696
+JointMotorSimpleProxy = jointmotorsimple:tcp -h 158.49.227.62 -p 14000
+LaserProxy = laser:tcp -h 158.49.227.62 -p 10003
+HumanCameraBodyProxy = humancamerabody:tcp -h 158.49.227.62 -p 14213
+
+
+
+Ice.Warn.Connections=0
+Ice.Trace.Network=0
+Ice.Trace.Protocol=0
+Ice.MessageSizeMax=20004800

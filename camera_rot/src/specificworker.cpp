@@ -17,8 +17,7 @@
  *    along with RoboComp.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "specificworker.h"
-#include <chrono>
-#include <thread>
+
 
 /**
 * \brief Default constructor
@@ -59,6 +58,8 @@ void SpecificWorker::initialize(int period)
     laser_in_robot_polygon = lp;
     robot_polygon = rp;
     giro = -1;
+    auto motor = jointmotorsimple_proxy->getMotorState("");
+    last_motor_pos = motor.pos;
 
     try
     {
@@ -94,7 +95,6 @@ void SpecificWorker::initialize(int period)
     for (int i = 0; i < id_articulaciones.size(); i++) {
         vector_articulaciones[i].first = id_articulaciones[i][0].asInt();
         vector_articulaciones[i].second = id_articulaciones[i][1].asInt();
-//        std::cout << "JSON" << std::endl;
     }
 
     x_axis_rotation_matrix = Eigen::AngleAxisf (1.3, Eigen::Vector3f::UnitX())
@@ -180,16 +180,10 @@ void SpecificWorker::compute()
     if (personaElegida != -1){
         drawPeopleMap(people, bState, personaElegida);
         rotateCamera(camerargbdsimple_proxy, target.dest.x());
-        if(k7 == 2){
-            exit(0);
-        }else{
-            k7++;
-        }
-
-//        moveRobot();
+        //moveRobot();
     }
     else{
-//        seguirUltimaPosicion();
+        //seguirUltimaPosicion();
     }
 }
 
@@ -200,17 +194,13 @@ void SpecificWorker::seguirUltimaPosicion(){
         float reduce_speed_if_turningv = exp(-pow(beta, 2)/0.1);
         float adv = MAX_ADV_VEL * reduce_speed_if_turningv * reduce_speed_if_close_to_target(mod);
 
-        //qInfo() << __FUNCTION__  << "X -> " << target.dest.x() << "         y -> " << target.dest.y() << "       angulo -> " << beta * 1.1 << "      mod -> "  << mod << endl;
-
         beta = std::clamp(beta, -1.f, 1.f);
-//        beta = fabs(beta)< 0.05 ? 0.f : beta;
         if (fabs(beta) < 0.05){
             beta = 0;
         }
 
         if (mod < 3000) {
             setRobotSpeed(adv, beta*1.2);
-            //qInfo() << __FUNCTION__ << "ADV:" << adv*1.3 << "BETA:" << beta << endl;
         }
         else{
             if (mod < 1500){
@@ -397,7 +387,6 @@ void SpecificWorker::moveRobot(){
             beta = 0;
         }
 
-//        std::cout << "holi 1" << std::endl;
         if (mod < 3000) {
             estaParao = false;
             setRobotSpeed(adv, beta*1.2);
@@ -409,10 +398,8 @@ void SpecificWorker::moveRobot(){
                 target.active = false;
             }
         }
-//        std::cout << "holi 2" << std::endl;
     }
     else{
-//        std::cout << "holi 3" << std::endl;
         if (!estaParao){
             setRobotSpeed(0, 0);
             estaParao = true;
@@ -421,21 +408,15 @@ void SpecificWorker::moveRobot(){
 }
 
 
-
 void SpecificWorker::rotateCamera(RoboCompCameraRGBDSimple::CameraRGBDSimplePrxPtr camerargbdsimple_proxy, float middleXPoint) {
-    //if(move)
-        //return;
+
     auto color = camerargbdsimple_proxy->getImage("");
     auto error = middleXPoint - (color.width/2);
     auto goal = RoboCompJointMotorSimple::MotorGoalPosition();
-    auto der_error = -(error - this->last_error);
+    auto der_error = -(error );//- this->last_error
     auto error_rads = atan2((k1*error)+(k2*der_error), color.focalx);
-    cout << error
     auto motor = jointmotorsimple_proxy->getMotorState("");
-
     auto goal_rad = motor.pos - error_rads;
-    cout << "Error rads: " << error_rads<< endl;
-    cout << "Goal rad: "<< goal_rad << endl;
 
     if((this->last_rad > (goal_rad + TOLERANCE)) ||
        (this->last_rad < (goal_rad -TOLERANCE)))
@@ -451,7 +432,6 @@ void SpecificWorker::rotateCamera(RoboCompCameraRGBDSimple::CameraRGBDSimplePrxP
         }
         else
         {
-            cout << "if: " << abs(rad_seg) << endl;
             if(abs(rad_seg) < MIN_SPEED)
             {
                 cout << "usando minima velocidad" << endl;
@@ -469,16 +449,16 @@ void SpecificWorker::rotateCamera(RoboCompCameraRGBDSimple::CameraRGBDSimplePrxP
         auto motor = jointmotorsimple_proxy->getMotorState("");
         cout << "Antes de moverse: " << motor.pos << endl;
 
+        if(last_motor_pos == motor.pos)
         jointmotorsimple_proxy->setPosition("", goal);
 
-
-        //move = true;
-        //wait 5 seconds
-        std::this_thread::sleep_for(std::chrono::nanoseconds(5 * 1000000000));
-
-
         auto motor2 = jointmotorsimple_proxy->getMotorState("");
-        cout << "Despues de moverse: " << motor2.pos << endl;
+        while(abs(motor2.pos - goal.position) > 1.5){
+            cout << "Dif: " << abs(motor2.pos - goal.position) << endl;
+            motor2 = jointmotorsimple_proxy->getMotorState("");
+            cout << "Despues de moverse: " << motor2.pos << endl;
+        }
+
 
         auto pos_err = motor.pos - last_motor_pos;
 

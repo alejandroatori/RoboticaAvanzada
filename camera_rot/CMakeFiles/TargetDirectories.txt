@@ -1,0 +1,15 @@
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/CMakeFiles/install/strip.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/CMakeFiles/install/local.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/CMakeFiles/install.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/CMakeFiles/list_install_components.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/CMakeFiles/rebuild_cache.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/CMakeFiles/edit_cache.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/src/CMakeFiles/install/strip.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/src/CMakeFiles/install/local.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/src/CMakeFiles/install.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/src/CMakeFiles/list_install_components.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/src/CMakeFiles/rebuild_cache.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/src/CMakeFiles/edit_cache.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/src/CMakeFiles/giraff_viewer.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/src/CMakeFiles/ICES__home_robocomp_robocomp_components_beta-robotica-class_RoboticaAvanzada_camera_rot_src.dir
+/home/alumno/robocomp/components/beta-robotica-class/RoboticaAvanzada/camera_rot/src/CMakeFiles/giraff_viewer_autogen.dir
